@@ -1,64 +1,81 @@
-# 🌐 Static Portfolio Website on AWS (S3 + CloudFront)
+# 🌐 AWS Static Portfolio Website (S3 + CloudFront)
 
 ## 📌 Overview
 
-This project demonstrates the deployment of a **highly available and scalable static website** using AWS cloud services.
-The website is hosted on **Amazon S3** and delivered globally via **Amazon CloudFront (CDN)** with secure access using **Origin Access Control (OAC)**.
+This project demonstrates a **production-grade deployment of a static website** using AWS cloud services.
+
+The goal was to build a system that is:
+
+* Fast (low latency globally)
+* Secure (HTTPS + restricted access)
+* Scalable (serverless architecture)
+* Highly available
 
 ---
 
 ## 🚀 Live Demo
 
-👉 https://d2gzqi4ftvqlln.cloudfront.net
+🔗 https://d2gzqi4ftvqlln.cloudfront.net
 
 ---
 
-## 🏗️ Architecture
+## 🧠 Problem Statement
 
-* **Amazon S3** → Stores static website files (HTML, CSS)
-* **Amazon CloudFront** → Provides global CDN delivery
-* **OAC (Origin Access Control)** → Secures S3 bucket access
-* **HTTPS** → Enabled for secure communication
+Traditional hosting methods often suffer from:
+
+* High latency for global users
+* Limited scalability
+* Complex infrastructure management
+* Lack of built-in security
+
+The objective was to design a **cloud-native solution** that solves these issues efficiently.
 
 ---
 
-## 🛠️ Tech Stack
+## 💡 Solution Architecture
 
-* HTML5, CSS3
-* AWS S3 (Static Hosting)
-* AWS CloudFront (CDN)
-* AWS IAM (Access Control & Policies)
+The system uses AWS services to deliver optimized performance:
+
+* **Amazon S3** → Stores static website files
+* **AWS CloudFront** → Global CDN for fast delivery
+* **Origin Access Control (OAC)** → Restricts direct S3 access
+* **HTTPS** → Secure content delivery
+
+### 🔁 Flow
+
+1. User requests website via CloudFront
+2. Cached content served from nearest edge location
+3. If not cached → request forwarded to S3
+4. Response cached for future requests
+
+---
+
+## 🏗️ Architecture Highlights
+
+* Serverless deployment (no backend servers)
+* Global CDN distribution
+* Secure access using OAC
+* Optimized caching strategies
 
 ---
 
 ## 📂 Project Structure
 
-```id="struct1"
+```
 portfolio-cloud-site/
 │
 ├── website/
-│   ├── index.html
-│   └── style.css
+│  ├── index.html
+│  ├── portfolio-aws.html
+│  ├── portfolio-flask.html
+│  └── portfolio-docker.html
 │
 ├── screenshots/
-│   ├── 01-s3-static-hosting.png
-│   ├── 02-cloudfront-distribution.png
-│   ├── 03-live-website.png
-│   └── 04-s3-objects.png
+│   ├── s3-hosting.png
+│   └── cloudfront-setup.png
 │
 └── README.md
 ```
-
----
-
-## ⚙️ Key Features
-
-* Static website hosting using AWS S3
-* Global content delivery via CloudFront CDN
-* Secure origin access using OAC
-* HTTPS enabled (SSL/TLS encryption)
-* Optimized caching for faster performance
-* Clean and responsive UI
 
 ---
 
@@ -82,55 +99,31 @@ portfolio-cloud-site/
 
 ---
 
-## 🔧 Deployment Steps
+## 📈 Impact
 
-### 1️⃣ S3 Bucket Setup
-
-* Created an S3 bucket
-* Disabled Block Public Access
-* Uploaded static files (`index.html`, `style.css`)
-
-### 2️⃣ Static Website Hosting
-
-* Enabled static hosting
-* Configured index document → `index.html`
-
-### 3️⃣ CloudFront Configuration
-
-* Created distribution with S3 as origin
-* Enabled **Origin Access Control (OAC)**
-* Configured Viewer Protocol Policy → Redirect HTTP to HTTPS
-* Set default root object → `index.html`
-
-### 4️⃣ Deployment
-
-* Waited for distribution deployment
-* Accessed website via CloudFront domain
+* Reduced latency using CDN edge locations
+* Improved global accessibility
+* Enhanced security with HTTPS & OAC
+* Zero server management (fully serverless)
 
 ---
 
 ## 📚 Key Learnings
 
-* Deploying static websites on AWS S3
-* Configuring CloudFront for CDN-based delivery
-* Implementing secure access using OAC
-* Understanding caching and performance optimization
-* Debugging real-world cloud deployment issues
+* CDN caching and performance optimization
+* Secure access control using OAC
+* CloudFront + S3 integration
+* Designing scalable cloud architectures
 
 ---
 
-## 🚀 Future Improvements
+## 🔗 GitHub Repository
 
-* Add custom domain using Route 53
-* Implement CI/CD using GitHub Actions
-* Enhance UI with modern frameworks (React/Tailwind)
-* Add backend services (Flask API on EC2)
+https://github.com/suryansh-singhal/portfolio-cloud-site
 
 ---
 
 ## 👨‍💻 Author
 
-**Suryansh Singhal**
-MCA Student | Cloud Computing Enthusiast
-
-📧 [suryanshsinghal.work@gmail.com](mailto:suryanshsinghal.work@gmail.com)
+Suryansh Singhal
+MCA Student | Cloud Computing | AWS | DevOps
