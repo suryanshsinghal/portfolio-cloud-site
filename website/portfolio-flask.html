@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flask API Case Study</title>
+
+  <!-- THEME (NO FLASH) -->
+  <script>
+    if (!localStorage.getItem("theme")) {
+      localStorage.setItem("theme", "dark");
+    }
+    if (localStorage.getItem("theme") === "dark") {
+      document.documentElement.classList.add("dark-mode");
+    }
+  </script>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- AOS -->
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #212529;
+      --muted: #6c757d;
+      --glass: rgba(255,255,255,0.7);
+      --border: rgba(0,0,0,0.08);
+    }
+
+    .dark-mode {
+      --bg: #0d1117;
+      --text: #e6edf3;
+      --muted: #9da5b4;
+      --glass: rgba(255,255,255,0.05);
+      --border: rgba(255,255,255,0.1);
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      transition: background 0.35s ease, color 0.35s ease;
+    }
+
+    p { color: var(--muted); margin-bottom: 14px; }
+
+    .dark-mode .text-muted {
+      color: #9da5b4 !important;
+    }
+
+    h1 { font-weight: 700; }
+    h4 { font-weight: 600; }
+
+    .section-card {
+      backdrop-filter: blur(14px);
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 25px;
+      margin-bottom: 28px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+      transition: all 0.3s ease;
+    }
+
+    .section-card:hover {
+      transform: translateY(-6px);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    ul {
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+
+    li {
+      margin-bottom: 6px;
+    }
+
+    hr {
+      border-color: var(--border);
+      margin: 45px 0;
+    }
+
+    .btn-group-custom {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 30px;
+    }
+
+    .btn-group-custom a {
+      flex: 1;
+      min-width: 140px;
+      transition: 0.25s;
+    }
+
+    .btn-group-custom a:hover {
+      transform: scale(1.05);
+    }
+
+    /* FIX GITHUB */
+    .dark-mode .btn-outline-dark {
+      color: #e6edf3;
+      border-color: #e6edf3;
+    }
+
+    .dark-mode .btn-outline-dark:hover {
+      background: #e6edf3;
+      color: #0d1117;
+    }
+
+    .btn-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 9999;
+      border-radius: 50%;
+      width: 45px;
+      height: 45px;
+    }
+  </style>
+</head>
+
+<body class="container py-5">
+
+<!-- TOGGLE -->
+<button class="btn btn-dark btn-toggle" onclick="toggleDarkMode()">
+  <i id="toggle-icon" class="bi bi-sun"></i>
+</button>
+
+<h1>Flask API on AWS EC2</h1>
+<p class="text-muted">Production Deployment with Nginx & Gunicorn</p>
+
+<hr>
+
+<!-- PROBLEM -->
+<div class="section-card" data-aos="fade-up">
+  <div class="section-header">
+    <i class="bi bi-exclamation-triangle"></i>
+    <h4>Problem</h4>
+  </div>
+
+  <p>Deploying a Flask application in a production environment involves significantly more complexity than using the built-in development server.</p>
+  <p>The default Flask server is not designed to handle concurrent requests efficiently and lacks reliability for real-world usage.</p>
+  <p>Additionally, directly exposing applications without a reverse proxy introduces performance limitations and security risks.</p>
+  <p>The goal was to build a scalable, stable, and production-ready backend system using AWS EC2.</p>
+</div>
+
+<!-- SOLUTION -->
+<div class="section-card" data-aos="fade-up">
+  <div class="section-header">
+    <i class="bi bi-lightbulb"></i>
+    <h4>Solution</h4>
+  </div>
+
+  <p>I deployed the Flask application on an AWS EC2 instance running a Linux environment, enabling full control over configuration.</p>
+  <p>Gunicorn was used as a production-grade WSGI server to handle multiple concurrent requests efficiently.</p>
+  <p>Nginx was configured as a reverse proxy to manage incoming traffic and forward requests to the application.</p>
+  <p>Systemd was implemented for process management, ensuring automatic restarts and continuous uptime.</p>
+  <p>Security groups were configured to allow controlled access, ensuring a secure deployment environment.</p>
+</div>
+
+<!-- ARCHITECTURE -->
+<div class="section-card" data-aos="fade-up">
+  <div class="section-header">
+    <i class="bi bi-diagram-3"></i>
+    <h4>Architecture Overview</h4>
+  </div>
+
+  <p>The system follows a layered architecture:</p>
+
+  <ul>
+    <li>Client requests are received by Nginx</li>
+    <li>Nginx forwards requests to Gunicorn</li>
+    <li>Gunicorn processes requests using worker processes</li>
+    <li>Flask handles application logic and responses</li>
+  </ul>
+
+  <p>This structure improves scalability, performance, and maintainability.</p>
+</div>
+
+<!-- DECISIONS -->
+<div class="section-card" data-aos="fade-up">
+  <div class="section-header">
+    <i class="bi bi-gear"></i>
+    <h4>Key Technical Decisions</h4>
+  </div>
+
+  <p>Several important choices were made to ensure production readiness.</p>
+  <p>Gunicorn was chosen over Flask’s default server for better concurrency and stability.</p>
+  <p>Nginx was selected due to its high performance and efficient request handling.</p>
+  <p>Systemd ensures reliability by managing application lifecycle automatically.</p>
+  <p>AWS EC2 provides flexibility and control over infrastructure configuration.</p>
+</div>
+
+<!-- IMPACT -->
+<div class="section-card" data-aos="fade-up">
+  <div class="section-header">
+    <i class="bi bi-graph-up"></i>
+    <h4>Impact</h4>
+  </div>
+
+  <p>The deployment resulted in a stable and scalable backend API capable of handling real-world traffic.</p>
+
+  <ul>
+    <li>Improved uptime through process management</li>
+    <li>Efficient request handling using Gunicorn</li>
+    <li>Secure routing via Nginx</li>
+    <li>Scalable architecture for future expansion</li>
+  </ul>
+
+  <p>This project demonstrates a transition from development-level setup to production-grade deployment.</p>
+</div>
+
+<!-- LEARNINGS -->
+<div class="section-card" data-aos="fade-up">
+  <div class="section-header">
+    <i class="bi bi-book"></i>
+    <h4>Learnings</h4>
+  </div>
+
+  <p>This project provided hands-on experience in backend deployment and system design.</p>
+
+  <ul>
+    <li>Understanding WSGI servers and request lifecycle</li>
+    <li>Configuring Nginx as reverse proxy</li>
+    <li>Managing services using systemd</li>
+    <li>Working with AWS EC2 infrastructure</li>
+  </ul>
+
+  <p>It strengthened my ability to design and deploy scalable backend systems.</p>
+</div>
+
+<!-- BUTTONS -->
+<div class="btn-group-custom">
+  <a href="http://13.233.197.179/" target="_blank" class="btn btn-outline-success">
+    Live
+  </a>
+
+  <a href="https://github.com/suryansh-singhal/flask-api-aws" target="_blank" class="btn btn-outline-dark">
+    GitHub
+  </a>
+</div>
+
+<a href="index.html" class="btn btn-primary mt-4">← Back</a>
+
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+
+<script>
+AOS.init({ duration: 1000, once: true });
+
+if (localStorage.getItem("theme") === "light") {
+  document.documentElement.classList.remove("dark-mode");
+  document.getElementById("toggle-icon").classList.replace("bi-sun","bi-moon");
+}
+
+function toggleDarkMode() {
+  document.documentElement.classList.toggle("dark-mode");
+
+  const icon = document.getElementById("toggle-icon");
+
+  if (document.documentElement.classList.contains("dark-mode")) {
+    icon.classList.replace("bi-moon","bi-sun");
+    localStorage.setItem("theme","dark");
+  } else {
+    icon.classList.replace("bi-sun","bi-moon");
+    localStorage.setItem("theme","light");
+  }
+}
+</script>
+
+</body>
+</html>

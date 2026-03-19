@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Docker Web App Case Study</title>
+
+  <!-- 🔥 THEME FIX -->
+  <script>
+    if (!localStorage.getItem("theme")) {
+      localStorage.setItem("theme", "dark");
+    }
+    if (localStorage.getItem("theme") === "dark") {
+      document.documentElement.classList.add("dark-mode");
+    }
+  </script>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- AOS -->
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #212529;
+      --muted: #6c757d;
+      --glass: rgba(255,255,255,0.7);
+      --border: rgba(0,0,0,0.08);
+    }
+
+    .dark-mode {
+      --bg: #0d1117;
+      --text: #e6edf3;
+      --muted: #9da5b4;
+      --glass: rgba(255,255,255,0.05);
+      --border: rgba(255,255,255,0.1);
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      transition: 0.35s ease;
+    }
+
+    p { color: var(--muted); margin-bottom: 14px; }
+
+    .dark-mode .text-muted {
+      color: #9da5b4 !important;
+    }
+
+    h1 { font-weight: 700; }
+    h4 { font-weight: 600; }
+
+    .section-card {
+      backdrop-filter: blur(14px);
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 25px;
+      margin-bottom: 28px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+      transition: 0.3s ease;
+    }
+
+    .section-card:hover {
+      transform: translateY(-6px);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    ul { margin-top: 10px; }
+    li { margin-bottom: 6px; }
+
+    hr {
+      border-color: var(--border);
+      margin: 45px 0;
+    }
+
+    .btn-group-custom {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 30px;
+    }
+
+    .btn-group-custom a {
+      flex: 1;
+      min-width: 140px;
+      transition: 0.25s;
+    }
+
+    .btn-group-custom a:hover {
+      transform: scale(1.05);
+    }
+
+    /* FIX GITHUB BUTTON */
+    .dark-mode .btn-outline-dark {
+      color: #e6edf3;
+      border-color: #e6edf3;
+    }
+
+    .dark-mode .btn-outline-dark:hover {
+      background: #e6edf3;
+      color: #0d1117;
+    }
+
+    .btn-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 9999;
+      border-radius: 50%;
+      width: 45px;
+      height: 45px;
+    }
+  </style>
+</head>
+
+<body class="container py-5">
+
+<!-- TOGGLE -->
+<button class="btn btn-dark btn-toggle" onclick="toggleDarkMode()">
+  <i id="toggle-icon" class="bi bi-sun"></i>
+</button>
+
+<h1>Dockerized Web Application</h1>
+<p class="text-muted">Containerized Deployment on AWS</p>
+
+<hr>
+
+<!-- PROBLEM -->
+<div class="section-card" data-aos="fade-up">
+  <div class="section-header">
+    <i class="bi bi-exclamation-triangle"></i>
+    <h4>Problem</h4>
+  </div>
+
+  <p>Modern application deployment often suffers from inconsistencies between development and production environments.</p>
+  <p>Applications that work on a developer’s local machine may fail in production due to differences in dependencies, configurations, and runtime environments.</p>
+  <p>Managing environments manually increases complexity and introduces a high risk of deployment failures.</p>
+  <p>The objective was to create a consistent, portable, and scalable deployment system.</p>
+</div>
+
+<!-- SOLUTION -->
+<div class="section-card" data-aos="fade-up">
+  <div class="section-header">
+    <i class="bi bi-lightbulb"></i>
+    <h4>Solution</h4>
+  </div>
+
+  <p>I implemented containerization using Docker to package the application along with all dependencies into a single unit.</p>
+  <p>A Dockerfile was created to define a reproducible build process, ensuring consistent environments across deployments.</p>
+  <p>The container was deployed on AWS EC2, allowing the application to run identically in both development and production environments.</p>
+  <p>This approach eliminated manual configuration and simplified deployment workflows.</p>
+</div>
+
+<!-- ARCHITECTURE -->
+<div class="section-card" data-aos="fade-up">
+  <div class="section-header">
+    <i class="bi bi-diagram-3"></i>
+    <h4>Architecture Overview</h4>
+  </div>
+
+  <p>The system follows a container-based architecture:</p>
+
+  <ul>
+    <li>Application packaged as a Docker image</li>
+    <li>Image used to create a running container</li>
+    <li>Container deployed on AWS EC2</li>
+    <li>Application accessed via exposed ports</li>
+  </ul>
+
+  <p>This ensures consistency and isolation across environments.</p>
+</div>
+
+<!-- DECISIONS -->
+<div class="section-card" data-aos="fade-up">
+  <div class="section-header">
+    <i class="bi bi-gear"></i>
+    <h4>Key Technical Decisions</h4>
+  </div>
+
+  <p>Docker was chosen for its portability and lightweight containerization capabilities.</p>
+  <p>Using Dockerfile ensured standardized builds and repeatable deployments.</p>
+  <p>EC2 provided infrastructure flexibility and control over the runtime environment.</p>
+  <p>Port mapping enabled external access to the application.</p>
+  <p>This setup prepares the system for future scaling using orchestration tools.</p>
+</div>
+
+<!-- IMPACT -->
+<div class="section-card" data-aos="fade-up">
+  <div class="section-header">
+    <i class="bi bi-graph-up"></i>
+    <h4>Impact</h4>
+  </div>
+
+  <p>Containerization significantly improved deployment consistency and reliability.</p>
+
+  <ul>
+    <li>Consistent environments across all stages</li>
+    <li>Faster and more reliable deployments</li>
+    <li>Reduced setup time</li>
+    <li>Improved scalability</li>
+  </ul>
+
+  <p>This project demonstrates how Docker simplifies application deployment.</p>
+</div>
+
+<!-- LEARNINGS -->
+<div class="section-card" data-aos="fade-up">
+  <div class="section-header">
+    <i class="bi bi-book"></i>
+    <h4>Learnings</h4>
+  </div>
+
+  <p>This project provided hands-on experience with containerization and DevOps practices.</p>
+
+  <ul>
+    <li>Docker architecture and lifecycle</li>
+    <li>Writing Dockerfiles</li>
+    <li>Managing containers and images</li>
+    <li>Cloud deployment using EC2</li>
+  </ul>
+
+  <p>It strengthened my understanding of modern deployment systems.</p>
+</div>
+
+<!-- FUTURE -->
+<div class="section-card" data-aos="fade-up">
+  <div class="section-header">
+    <i class="bi bi-lightning"></i>
+    <h4>Future Improvements</h4>
+  </div>
+
+  <p>The system can be enhanced using Docker Compose for multi-container setups.</p>
+  <p>Kubernetes can be introduced for orchestration, scaling, and automation.</p>
+  <p>CI/CD pipelines can automate builds and deployments.</p>
+  <p>Monitoring tools can improve observability and performance tracking.</p>
+</div>
+
+<!-- BUTTONS -->
+<div class="btn-group-custom">
+  <a href="http://13.234.77.176:5000" target="_blank" class="btn btn-outline-success">Live</a>
+  <a href="https://github.com/suryansh-singhal/docker-web-app" target="_blank" class="btn btn-outline-dark">GitHub</a>
+</div>
+
+<a href="index.html" class="btn btn-primary mt-4">← Back</a>
+
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+
+<script>
+AOS.init({ duration: 1000, once: true });
+
+if (localStorage.getItem("theme") === "light") {
+  document.documentElement.classList.remove("dark-mode");
+  document.getElementById("toggle-icon").classList.replace("bi-sun","bi-moon");
+}
+
+function toggleDarkMode() {
+  document.documentElement.classList.toggle("dark-mode");
+
+  const icon = document.getElementById("toggle-icon");
+
+  if (document.documentElement.classList.contains("dark-mode")) {
+    icon.classList.replace("bi-moon","bi-sun");
+    localStorage.setItem("theme","dark");
+  } else {
+    icon.classList.replace("bi-sun","bi-moon");
+    localStorage.setItem("theme","light");
+  }
+}
+</script>
+
+</body>
+</html>
